@@ -8,14 +8,32 @@
 import UIKit
 
 class FoodDetailViewController: UIViewController {
-
+    var item : Food?
+    
+    @IBOutlet weak var contentImageView: UIImageView!
+    
+    @IBOutlet weak var labelName: UITextField!
+    
+    @IBOutlet weak var labelCountry: UITextField!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setUpViews()
         // Do any additional setup after loading the view.
     }
     
 
+    @IBAction func back(_ sender: UIButton) {
+        
+        self.dismiss(animated: true)
+    }
+    
+    private func setUpViews() {
+        contentImageView.image = UIImage(named: item!.image)
+        labelName.text = item?.name
+        labelCountry.text = item?.country
+    }
     /*
     // MARK: - Navigation
 

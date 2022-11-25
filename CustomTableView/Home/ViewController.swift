@@ -11,6 +11,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet weak var foodTableView: UITableView!
     
+    var selectedItem : Food?
+    
     var arrayDish = [Food(name: "pho bo", country: "vietNam", image: "bunbo.jpeg"),
                      Food(name: "pho bo", country: "vietNam", image: "bunbo.jpeg"),
                      Food(name: "pho bo", country: "vietNam", image: "bunbo.jpeg"),
@@ -38,7 +40,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+
     
+    //hàm này khi chuyển màn hình sẽ được gọi
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let foodDetailController = segue.destination as? FoodDetailViewController {
+            foodDetailController.item = selectedItem
+        }
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrayDish.count
@@ -56,11 +65,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("click")
+        tableView.deselectRow(at: indexPath, animated: true)
+        selectedItem = arrayDish[indexPath.item]
+        self.performSegue(withIdentifier: "showFoodDetail", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            print("delete")
             self.arrayDish.remove(at: indexPath.row)
             self.foodTableView.deleteRows(at: [indexPath], with: .automatic)
         }
